@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import User from "../models/user.model";
-import { connectToDatabase } from "../moongoose";
+import { connectToDB } from "../mongoose";
 import Thread from "../models/thread.model";
 import { FilterQuery, SortOrder } from "mongoose";
 
@@ -23,7 +23,7 @@ export async function updateUser({
     bio,
     path,
     }: Params): Promise<void> {
-    connectToDatabase();
+    connectToDB();
 
    try {
     await User.findOneAndUpdate(
@@ -47,7 +47,7 @@ export async function updateUser({
 
 export async function fetchUser(userId: string) {
     try {
-        connectToDatabase();
+        connectToDB();
 
         return await User.findOne({id: userId})
         //     .populate({
@@ -61,7 +61,7 @@ export async function fetchUser(userId: string) {
 
 export async function fetchUserPosts(userId: string) {
     try {
-        connectToDatabase();
+        connectToDB();
 
         //Find all threads authored by user with given userId
         const threads = await User.findOne({id: userId})
@@ -98,7 +98,7 @@ export async function fetchUsers({
   sortBy?: SortOrder;
 }) {
   try {
-    connectToDatabase();
+    connectToDB();
 
     // Calculate the number of users to skip based on the page number and page size.
     const skipAmount = (pageNumber - 1) * pageSize;
@@ -145,7 +145,7 @@ export async function fetchUsers({
 
   export async function getActivity(userId: string) {
     try {
-      connectToDatabase();
+      connectToDB();
   
       
       const userThreads = await Thread.find({ author: userId });
